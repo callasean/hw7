@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Homework 7</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 400px;
+        width: 600px;
+      }
+      h2, h3 {
+      	font-family: arial;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Homework #7: Uvic Campus</h2>
+    <h3>Sean Callaghan</h3>
+    <div id="map" onclick="counting()"></div>
+    <script>
+var locations = [
+    [
+        "UVIC Libary <br> 48.463433, -123.309637",
+        48.463433, -123.309637,
+    ],
+    [
+    		"Clearihue <br> 48.464274, -123.310399",
+        48.464274, -123.310399,
+    ],
+    [
+    	"Mystic Market <br> 48.465000, -123.311875",
+    	48.465000, -123.311875,
+    ],
+]
+	
+      var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 48.463649, lng: -123.311951},
+          zoom: 15,
+        });
+        var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+    var count = 0;
+
+    for (i = 0; i < locations.length; i++) {  
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][1], locations[i][2], locations [i][3]),
+        map: map
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, marker);
+          console.log('click');
+
+        }
+      })(marker, i));
+
+
+google.maps.event.addListener(map, 'click', function(event) {
+                // get lat/lon of click
+                var clickLat = event.latLng.lat();
+                var clickLon = event.latLng.lng();
+
+                // show in input box
+                document.getElementById("lat").value = clickLat.toFixed(5);
+                document.getElementById("lon").value = clickLon.toFixed(5);
+
+                  // var mark = new google.maps.Marker({
+                  //       position: new google.maps.LatLng(clickLat,clickLon),
+                  //       map: map
+                  //    });
+            });
+
+    }
+    map.addListener('bounds_changed', function() {
+    	console.log('bounds_changed');
+  });
+      }
+
+var cnt = 0;
+function counting() {
+	cnt++;
+	document.getElementById('click').innerHTML = "Number of Clicks: " + cnt;
+}
+
+	
+
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHShVoKks2UlrB3csranbVMX5LeuByYu0&callback=initMap"
+    async defer></script>
+ <p id="click">Number of Clicks: 0</p>
+Lat: <input type="text" id='lat'>
+Lon: <input type="text" id='lon'>
+  </body>
+</html>
